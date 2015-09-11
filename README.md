@@ -1,8 +1,6 @@
 # Awit
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/awit`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Thin wrapper around [Typhoeus](typhoeus) to make communication with OAuth-protected APIs easier.
 
 ## Installation
 
@@ -22,7 +20,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Setup an initializer to let Awit know how to fetch the bearer token:
+
+```ruby
+Awit.configure do |config|
+  # This must be set
+  config.auth_token = { MyAuthClient.new.get_access_token }
+
+  # These are optional
+  config.content_type = "application/javascript" # defaults to "application/json"
+  config.accept = "application/javascript" # defaults to "application/json"
+end
+```
+
+Then, in your app:
+
+```
+Awit.post("https://other-app.com/api/v1/jobs", {body: "here"})
+Awit.get("https://other-app.com/api/v1/jobs/1")
+Awit.delete("https://other-app.com/api/v1/jobs/1")
+Awit.put("https://other-app.com/api/v1/jobs/1", {something: "else"})
+```
+
+A [Typhoeus](typhoeus) response is returned by the `post`, `get`, `delete`, and `put` methods above.
 
 ## Development
 
@@ -39,3 +59,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+  [typhoeus]: https://github.com/typhoeus/typhoeus
